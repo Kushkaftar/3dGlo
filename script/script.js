@@ -164,12 +164,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
                 let lis = "";
                 lis = i === slide.length- 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
-                console.log(i, lis);
 
                 ul.insertAdjacentHTML("afterbegin", lis);
 
             });
-            console.log(ul);
         };
         addDot();
 
@@ -178,8 +176,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
         let currentSlide = 0,
             internal;
-
-        console.log(dot);
 
         const prevSlide = (elem, index, strClass) => elem[index].classList.toggle(strClass);
 
@@ -243,5 +239,14 @@ window.addEventListener("DOMContentLoaded", function () {
     };
 
     slider();
+
+    // commandPhoto ...
+
+    const commandPhoto = () => {
+        const command = document.getElementById("command");
+        console.log(command);
+    };
+
+    commandPhoto();
 
 });

@@ -159,8 +159,7 @@ window.addEventListener("DOMContentLoaded", function () {
             const ul = document.querySelector(".portfolio-dots");
             slide.forEach((e,i) => {
 
-                let lis = "";
-                lis = i === slide.length - 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
+                let lis = i === slide.length - 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
 
                 ul.insertAdjacentHTML("afterbegin", lis);
 
@@ -193,7 +192,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
         const stopSlide = () => clearInterval(internal);
 
-        sliderParent.addEventListener("click", (evt) => {
+        sliderParent.addEventListener("click", evt => {
             evt.preventDefault();
             let  target = evt.target;
             if (!target.matches(".dot, .portfolio-btn")) return;
@@ -223,7 +222,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
         });
 
-        sliderParent.addEventListener("mouseover", (evt) => {
+        sliderParent.addEventListener("mouseover", evt => {
             if (evt.target.matches(".dot, .portfolio-btn")) stopSlide();
         });
 
@@ -244,9 +243,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
         const changePhoto = (event) => {
             if (event.target.matches(".command__photo")) {
-                let interim = event.target.getAttribute("src");
-                event.target.setAttribute("src", event.target.getAttribute("data-img"));
-                event.target.setAttribute("data-img", interim);
+                let interim = event.target.src;
+                event.target.src = event.target.dataset.img;
+                event.target.dataset.img = interim;
+
             }
         };
 
@@ -257,6 +257,21 @@ window.addEventListener("DOMContentLoaded", function () {
 
     commandPhoto();
 
-    //
+    // calcValidation ...
+
+    const calcValidation = () => {
+
+        const calcBlock = document.querySelector(".calc-block");
+        console.log(calcBlock);
+
+        calcBlock.addEventListener("input", evt => {
+
+            if (evt.target.matches("input")) {
+                console.log(evt.target);
+            }
+        })
+    };
+
+    calcValidation();
 
 });

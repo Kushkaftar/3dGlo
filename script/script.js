@@ -152,8 +152,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // slider ...
 
-
-
     const slider = () => {
 
         const slide = document.querySelectorAll(".portfolio-item");
@@ -163,7 +161,7 @@ window.addEventListener("DOMContentLoaded", function () {
             slide.forEach((e,i) => {
 
                 let lis = "";
-                lis = i === slide.length- 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
+                lis = i === slide.length - 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
 
                 ul.insertAdjacentHTML("afterbegin", lis);
 
@@ -244,9 +242,22 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const commandPhoto = () => {
         const command = document.getElementById("command");
-        console.log(command);
+
+        const changePhoto = (event) => {
+            if (event.target.matches(".command__photo")) {
+                let interim = event.target.getAttribute("src");
+                event.target.setAttribute("src", event.target.getAttribute("data-img"));
+                event.target.setAttribute("data-img", interim);
+            }
+        };
+
+        command.addEventListener("mouseover", evt => changePhoto(evt));
+
+        command.addEventListener("mouseout", evt => changePhoto(evt))
     };
 
     commandPhoto();
+
+    //
 
 });

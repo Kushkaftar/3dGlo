@@ -74,38 +74,41 @@ window.addEventListener("DOMContentLoaded", function () {
 
         const popup = document.querySelector(".popup"),
             btnPopup = document.querySelectorAll(".popup-btn"),
-            popupClose = document.querySelector(".popup-close");
+            popupContent = document.querySelector(".popup-content");
 
-        const animate = () => {
-            popup.style.position = "relative";
-            // popup.style.left = "45%";
-            popup.style.display = "block";
-            let top = popup.scrollTop,
-            scrollHeight = popup.scrollHeight;
-            console.dir(popup);
 
-            console.dir(document.documentElement.clientHeight);
-            console.dir(document.documentElement.clientWidth);
-            console.log(top);
-            console.log(scrollHeight);
-            let start = Date.now();
-
-            let timer = setInterval(function() {
-                let timePassed = Date.now() - start;
-
-                popup.style.left = timePassed / 5 + 'px';
-
-                if (timePassed > 2000) clearInterval(timer);
-
-            }, 20);
-
-        };
 
         btnPopup.forEach((el) => {
-            el.addEventListener("click", animate);
+            el.addEventListener("click", () => {
+                popup.style.display = "block";
+                popupContent.style.position = "relative";
+                let start = Date.now();
+
+                let timer = setInterval(function() {
+                    let timePassed = Date.now() - start;
+
+                    popupContent.style.top = timePassed / 5 + 'px';
+
+                    if (timePassed > 1000) clearInterval(timer);
+
+                }, 20);
+
+            });
         });
 
-        popupClose.addEventListener("click", () => popup.style.display = "none");
+        popup.addEventListener("click", (evt) => {
+            let target = evt.target;
+
+            if (target.classList.contains("popup-close")) {
+                popup.style.display = "none";
+            } else  {
+                target = target.closest(".popup-content");
+                if (!target) {
+                    popup.style.display = "none";
+                }
+            }
+
+        });
     };
 
     togglePopup();

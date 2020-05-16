@@ -152,15 +152,18 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // slider ...
 
-    const slide = document.querySelectorAll(".portfolio-item");
+
 
     const slider = () => {
+
+        const slide = document.querySelectorAll(".portfolio-item");
+
         const addDot = () => {
             const ul = document.querySelector(".portfolio-dots");
             slide.forEach((e,i) => {
 
                 let lis = "";
-                lis = i === slide.length- 1 ? `<li class=\"${i} dot dot-active\"></li>` : `<li class=\" ${i} dot\"></li>`;
+                lis = i === slide.length- 1 ? `<li class=\"dot dot-active\"></li>` : `<li class=\"dot\"></li>`;
                 console.log(i, lis);
 
                 ul.insertAdjacentHTML("afterbegin", lis);

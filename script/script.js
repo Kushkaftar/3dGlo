@@ -82,7 +82,20 @@ window.addEventListener("DOMContentLoaded", function () {
 
         btnPopup.forEach((el) => {
             el.addEventListener("click", () => {
-                popup.style.display = "block"
+                popup.style.display = "block";
+                popupContent.style.position = "relative";
+                //popupContent.style.top = "-400px";
+                let start = Date.now();
+
+                let timer = setInterval(function() {
+                    let timePassed = Date.now() - start;
+
+                    popupContent.style.top = timePassed / 5 + 'px';
+
+                    if (timePassed > 1000) clearInterval(timer);
+
+                }, 20);
+
             });
         });
 

@@ -267,7 +267,7 @@ window.addEventListener("DOMContentLoaded", function () {
         calcBlock.addEventListener("input", evt => {
 
             if (evt.target.matches("input")) {
-                console.log(evt.target);
+                evt.target.value = evt.target.value.replace(/\D/g, "");
             }
         })
     };

@@ -257,6 +257,54 @@ window.addEventListener("DOMContentLoaded", function () {
 
     commandPhoto();
 
+    // calc ...
+
+    const calc = (price = 100) => {
+
+        const calcBlock = document.querySelector(".calc-block"),
+        selector = document.querySelector(".calc-type"),
+        inputSquare = document.querySelector(".calc-square"),
+        inputCount = document.querySelector(".calc-count"),
+        inputDay = document.querySelector(".calc-day"),
+        totalValue = document.getElementById("total");
+
+
+        const  countSum = () => {
+            let  total = 0,
+            countValue = 1,
+            dayValue = 1;
+            const typeValue = selector.options[selector.selectedIndex].value,
+            squareValue = +inputSquare.value;
+
+            if (inputCount.value > 1) {
+                countValue += (inputCount.value -1) / 10;
+            }
+
+            if (inputDay.value && inputDay.value < 5) {
+                dayValue *= 2;
+            } else if (inputDay.value && inputDay.value < 10) {
+                dayValue *= 1.5;
+            }
+
+            if (typeValue && squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+
+            totalValue.textContent = String(total);
+        };
+
+        calcBlock.addEventListener("change", evt => {
+            let target = evt.target;
+
+            if (target.matches("input") || target.matches("select")) countSum();
+
+        })
+
+
+    };
+
+    calc(100);
+
     // calcValidation ...
 
     const calcValidation = () => {

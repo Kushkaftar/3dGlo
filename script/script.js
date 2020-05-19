@@ -71,6 +71,26 @@ window.addEventListener("DOMContentLoaded", function () {
 
      toggleMenu();
 
+     // scroll ...
+
+    const scrollToService = () => {
+        const anc = document.querySelectorAll('a[href*="#"]');
+
+        anc.forEach(item => item.addEventListener("click", evt => {
+            let target = evt.target;
+            if (!target.hasAttribute("class")) {
+                evt.preventDefault();
+                document.querySelector(item.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                })
+            }
+        }))
+
+    }
+
+    scrollToService();
+
      // popup ...
 
     const togglePopup = () => {
@@ -312,7 +332,6 @@ window.addEventListener("DOMContentLoaded", function () {
     const calcValidation = () => {
 
         const calcBlock = document.querySelector(".calc-block");
-        console.log(calcBlock);
 
         calcBlock.addEventListener("input", evt => {
 

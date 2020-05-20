@@ -288,12 +288,32 @@ window.addEventListener("DOMContentLoaded", function () {
                 dayValue *= 1.5;
             }
 
-            if (typeValue && squareValue) {
-                total = price * typeValue * squareValue * countValue * dayValue;
+            Math.round10 = function(value, exp) {
+                return decimalAdjust('round', value, exp);
             }
+            function decimalAdjust(type, value, exp) {
+                if (typeof exp === 'undefined' || +exp === 0) {
+                    return Math[type](value);
+                }
+                value = +value;
+                exp = +exp;
+                if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+                    return NaN;
+                }
+                value = value.toString().split('e');
+                value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+                value = value.toString().split('e');
+                return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+            }
+
+            if (typeValue && squareValue) {
+                total = price * typeValue * Math.round10(countValue * squareValue, -1) * dayValue;
+            }
+
 
             totalValue.textContent = String(total);
         };
+
 
         calcBlock.addEventListener("change", evt => {
             let target = evt.target;

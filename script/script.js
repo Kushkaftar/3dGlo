@@ -329,10 +329,9 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // calcValidation ...
 
-    const calcValidation = () => {
+    const Validation = () => {
 
         const calcBlock = document.querySelector(".calc-block");
-        //console.log(calcBlock);
 
         calcBlock.addEventListener("input", evt => {
 
@@ -344,18 +343,16 @@ window.addEventListener("DOMContentLoaded", function () {
 
         const inputValid = (evt) => {
             let target = evt.target;
+
             switch (target.getAttribute("name")) {
                 case "user_name":
                     target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
-                    console.log(target.value);
                     break;
                 case "user_message":
                     target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
-                    console.log(target.value);
                     break;
                 case "user_phone":
                     evt.target.value = evt.target.value.replace(/[^+0-9]/gi, "");
-                    console.log(target.getAttribute("name"));
                     break;
             }
         }
@@ -365,13 +362,13 @@ window.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    calcValidation();
+    Validation();
 
     // send form
 
     const  sendForm = () => {
         const errorMassage = "что-то пошло не так...",
-            loadMassage = "load",
+            loadMassage = "load...",
             successMassage = "Thanks!";
 
         const statusMassage = document.createElement("div");
@@ -387,29 +384,40 @@ window.addEventListener("DOMContentLoaded", function () {
             let target = evt.target;
             target.appendChild(statusMassage);
 
-            const request = new XMLHttpRequest();
-            request.addEventListener("readystatechange", () => {
-                statusMassage.textContent = loadMassage;
-
-                    if (request.readyState !== 4) return;
-                    if (request.status === 200) {
-                        statusMassage.textContent = successMassage;
-                    } else {
-                        statusMassage.textContent = errorMassage;
-                    }
-                });
-
-            request.open("post", "./server.php");
-            request.setRequestHeader("Content-Type", "application/json");
             const formData = new FormData(form);
+            statusMassage.textContent = loadMassage;
             let body = {};
 
             formData.forEach((val, key) => body[key] = val);
-            request.send(JSON.stringify(body));
+
+            postData(body, () => {
+                statusMassage.textContent = successMassage;
+            }, (error) => {
+                statusMassage.textContent = errorMassage;
+                console.error(error);
+            });
+
             let f = target.querySelectorAll("input");
             f.forEach(elm => elm.value = "");
-            console.log(f);
 
+        }
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener("readystatechange", () => {
+
+                if (request.readyState !== 4) return;
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            request.open("post", "./server.php");
+            request.setRequestHeader("Content-Type", "application/json");
+
+            request.send(JSON.stringify(body));
         }
 
         forms.forEach(item => item.addEventListener("submit", evt => sendToServer(evt)))

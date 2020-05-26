@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     const addNull = (str) => String(str).length > 1 ? str : `0${str}`;
 
-    countTimer("14 july 2020");
+    countTimer("14 june 2020");
 
     // menu ...
 
@@ -332,7 +332,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const calcValidation = () => {
 
         const calcBlock = document.querySelector(".calc-block");
-        console.log(calcBlock);
+        //console.log(calcBlock);
 
         calcBlock.addEventListener("input", evt => {
 
@@ -340,8 +340,83 @@ window.addEventListener("DOMContentLoaded", function () {
                 evt.target.value = evt.target.value.replace(/\D/g, "");
             }
         })
+        const forms = document.querySelectorAll("form");
+
+        const inputValid = (evt) => {
+            let target = evt.target;
+            switch (target.getAttribute("name")) {
+                case "user_name":
+                    target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
+                    console.log(target.value);
+                    break;
+                case "user_message":
+                    target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
+                    console.log(target.value);
+                    break;
+                case "user_phone":
+                    evt.target.value = evt.target.value.replace(/[^+0-9]/gi, "");
+                    console.log(target.getAttribute("name"));
+                    break;
+            }
+        }
+
+        forms.forEach(elm => elm.addEventListener("input", evt => inputValid(evt)))
+
+
     };
 
     calcValidation();
+
+    // send form
+
+    const  sendForm = () => {
+        const errorMassage = "что-то пошло не так...",
+            loadMassage = "load",
+            successMassage = "Thanks!";
+
+        const statusMassage = document.createElement("div");
+        statusMassage.style.cssText = `font-size: 2rem;
+                                        color: #fff`;
+
+        const form = document.getElementById("form1"),
+            forms = document.querySelectorAll("form");
+
+        const sendToServer = (evt) => {
+            evt.preventDefault();
+
+            let target = evt.target;
+            target.appendChild(statusMassage);
+
+            const request = new XMLHttpRequest();
+            request.addEventListener("readystatechange", () => {
+                statusMassage.textContent = loadMassage;
+
+                    if (request.readyState !== 4) return;
+                    if (request.status === 200) {
+                        statusMassage.textContent = successMassage;
+                    } else {
+                        statusMassage.textContent = errorMassage;
+                    }
+                });
+
+            request.open("post", "./server.php");
+            request.setRequestHeader("Content-Type", "application/json");
+            const formData = new FormData(form);
+            let body = {};
+
+            formData.forEach((val, key) => body[key] = val);
+            request.send(JSON.stringify(body));
+            let f = target.querySelectorAll("input");
+            f.forEach(elm => elm.value = "");
+            console.log(f);
+
+        }
+
+        forms.forEach(item => item.addEventListener("submit", evt => sendToServer(evt)))
+
+
+    };
+
+    sendForm();
 
 });

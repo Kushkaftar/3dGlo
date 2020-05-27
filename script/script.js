@@ -329,7 +329,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     // calcValidation ...
 
-    const Validation = () => {
+    const validation = () => {
 
         const calcBlock = document.querySelector(".calc-block");
 
@@ -362,7 +362,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     };
 
-    Validation();
+    validation();
 
     // send form
 
@@ -375,8 +375,7 @@ window.addEventListener("DOMContentLoaded", function () {
         statusMassage.style.cssText = `font-size: 2rem;
                                         color: #fff`;
 
-        const form = document.getElementById("form1"),
-            forms = document.querySelectorAll("form");
+        const forms = document.querySelectorAll("form");
 
         const sendToServer = (evt) => {
             evt.preventDefault();
@@ -384,7 +383,7 @@ window.addEventListener("DOMContentLoaded", function () {
             let target = evt.target;
             target.appendChild(statusMassage);
 
-            const formData = new FormData(form);
+            const formData = new FormData(target);
             statusMassage.textContent = loadMassage;
             let body = {};
 
@@ -397,8 +396,8 @@ window.addEventListener("DOMContentLoaded", function () {
                 console.error(error);
             });
 
-            let f = target.querySelectorAll("input");
-            f.forEach(elm => elm.value = "");
+            let formClear = target.querySelectorAll("input");
+            formClear.forEach(elm => elm.value = "");
 
         }
 

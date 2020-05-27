@@ -389,14 +389,19 @@ window.addEventListener("DOMContentLoaded", function () {
 
             formData.forEach((val, key) => body[key] = val);
 
-            postData(body, () => {
+            const thenReq = () => {
                 statusMassage.textContent = successMassage;
                 setTimeout(() => statusMassage.remove(), 5000);
-            }, (error) => {
+            }
+
+            const errReq = (error) => {
                 statusMassage.textContent = errorMassage;
                 console.error(error);
                 setTimeout(() => statusMassage.remove(), 5000);
-            });
+            }
+            postData(body)
+                .then(thenReq)
+                .catch(errReq);
 
             let formClear = target.querySelectorAll("input");
             formClear.forEach(elm => elm.value = "");
@@ -404,22 +409,24 @@ window.addEventListener("DOMContentLoaded", function () {
 
         }
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener("readystatechange", () => {
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.addEventListener("readystatechange", () => {
 
-                if (request.readyState !== 4) return;
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+                    if (request.readyState !== 4) return;
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+
+                request.open("post", "./server.php");
+                request.setRequestHeader("Content-Type", "application/json");
+
+                request.send(JSON.stringify(body));
             });
-
-            request.open("post", "./server.php");
-            request.setRequestHeader("Content-Type", "application/json");
-
-            request.send(JSON.stringify(body));
         }
 
         forms.forEach(item => item.addEventListener("submit", evt => sendToServer(evt)))

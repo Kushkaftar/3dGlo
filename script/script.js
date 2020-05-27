@@ -391,13 +391,16 @@ window.addEventListener("DOMContentLoaded", function () {
 
             postData(body, () => {
                 statusMassage.textContent = successMassage;
+                setTimeout(() => statusMassage.remove(), 5000);
             }, (error) => {
                 statusMassage.textContent = errorMassage;
                 console.error(error);
+                setTimeout(() => statusMassage.remove(), 5000);
             });
 
             let formClear = target.querySelectorAll("input");
             formClear.forEach(elm => elm.value = "");
+
 
         }
 

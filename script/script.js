@@ -392,42 +392,36 @@ window.addEventListener("DOMContentLoaded", function () {
             const thenReq = () => {
                 statusMassage.textContent = successMassage;
                 setTimeout(() => statusMassage.remove(), 5000);
-            }
+            };
 
             const errReq = (error) => {
                 statusMassage.textContent = errorMassage;
                 console.error(error);
                 setTimeout(() => statusMassage.remove(), 5000);
-            }
+            };
             postData(body)
-                .then(thenReq)
-                .catch(errReq);
+                .then((response) => {
+                    if (response.status !== 200) throw new Error("status not 200");
+                    thenReq()
+                })
+                .catch((error) => errReq(error));
 
             let formClear = target.querySelectorAll("input");
             formClear.forEach(elm => elm.value = "");
 
 
-        }
+        };
 
         const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.addEventListener("readystatechange", () => {
 
-                    if (request.readyState !== 4) return;
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        reject(request.status);
-                    }
-                });
-
-                request.open("post", "./server.php");
-                request.setRequestHeader("Content-Type", "application/json");
-
-                request.send(JSON.stringify(body));
+            return fetch("server.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body),
             });
-        }
+        };
 
         forms.forEach(item => item.addEventListener("submit", evt => sendToServer(evt)))
 

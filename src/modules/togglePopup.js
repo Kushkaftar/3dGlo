@@ -9,18 +9,19 @@ const togglePopup = () => {
     btnPopup.forEach((el) => {
         el.addEventListener("click", () => {
             popup.style.display = "block";
-            popupContent.style.position = "relative";
-            let start = Date.now();
+            if (document.documentElement.clientWidth >= 767) {
+                popupContent.style.position = "relative";
+                let start = Date.now();
 
-            let timer = setInterval(function() {
-                let timePassed = Date.now() - start;
+                let timer = setInterval(function() {
+                    let timePassed = Date.now() - start;
 
-                popupContent.style.top = timePassed / 5 + 'px';
+                    popupContent.style.top = timePassed / 5 + 'px';
 
-                if (timePassed > 1000) clearInterval(timer);
+                    if (timePassed > 1000) clearInterval(timer);
 
-            }, 20);
-
+                }, 20);
+            }
         });
     });
 

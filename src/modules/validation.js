@@ -18,7 +18,7 @@ const validation = () => {
                 target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
                 break;
             case "user_message":
-                target.value = evt.target.value.replace(/[^А-ЯЁа-яё\s]/g, "");
+                target.value = evt.target.value.replace(/[^А-ЯЁа-яё.,;:?!'`"\-\s]/g, "");
                 break;
             case "user_phone":
                 evt.target.value = evt.target.value.replace(/[^+0-9]/gi, "");
